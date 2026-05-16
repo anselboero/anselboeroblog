@@ -1,9 +1,12 @@
 .venv/
+.git/
+.gitignore
 __pycache__/
 *.pyc
 db.sqlite3
 db.sqlite3-journal
-.DS_Store
 .env
-.claude/settings.local.json
 staticfiles/
+.claude/
+.DS_Store
+.github/
