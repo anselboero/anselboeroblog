@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load blog_extras %}
+
+{% block content %}
+  {% for entry in entries %}
+    <article>
+      <h2><a href="{{ entry.get_absolute_url }}">{{ entry.title }}</a></h2>
+      <time datetime="{{ entry.created|date:'c' }}">{{ entry.created|date:"j M Y" }}</time>
+      <div>{{ entry.body|markdown|truncatewords_html:40 }}</div>
+    </article>
+  {% empty %}
+    <p>No entries yet. Add one in the <a href="{% url 'admin:index' %}">admin</a>.</p>
+  {% endfor %}
+{% endblock %}

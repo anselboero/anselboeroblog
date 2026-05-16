@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load blog_extras %}
+
+{% block title %}{{ entry.title }} — Ansel Boero{% endblock %}
+
+{% block content %}
+  <article>
+    <h2>{{ entry.title }}</h2>
+    <time datetime="{{ entry.created|date:'c' }}">{{ entry.created|date:"j M Y" }}</time>
+    <div>{{ entry.body|markdown }}</div>
+  </article>
+{% endblock %}
