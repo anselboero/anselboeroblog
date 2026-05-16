@@ -9,6 +9,7 @@ class Entry(models.Model):
     body = models.TextField()
     created = models.DateTimeField(default=timezone.now)
     updated = models.DateTimeField(auto_now=True)
+    is_published = models.BooleanField(default=False)
 
     class Meta:
         ordering = ['-created']
