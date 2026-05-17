@@ -11,7 +11,21 @@
     a { color: #58a6ff; }
     h1 a { color: inherit; text-decoration: none; }
     header { border-bottom: 1px solid #2a2a2a; padding-bottom: 1rem; margin-bottom: 2rem; }
+    nav { margin-top: 0.5rem; }
+    nav a { margin-right: 1rem; }
+    .book-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 1.5rem; margin-top: 1rem; }
+    .book-card { transition: transform 0.15s; }
+    .book-card:hover { transform: translateY(-3px); }
+    .book-cover-link { display: block; }
+    .book-card img { width: 100%; aspect-ratio: 2/3; object-fit: cover; border-radius: 4px; background: #1a1a1a; display: block; }
+    .book-cover-placeholder { width: 100%; aspect-ratio: 2/3; background: #1a1a1a; border-radius: 4px; display: flex; align-items: center; justify-content: center; padding: 0.5rem; text-align: center; font-size: 0.85rem; color: #888; }
+    .book-meta { margin-top: 0.5rem; font-size: 0.9rem; }
+    .book-title a { color: #e6e6e6; text-decoration: none; font-weight: 600; }
+    .book-title a:hover { text-decoration: underline; }
+    .book-author { color: #999; font-size: 0.85rem; margin-top: 0.15rem; }
+    .book-author a { color: #999; }
     time { color: #999; font-size: 0.9rem; }
+    .entry-book { color: #999; font-size: 0.9rem; margin: 0.25rem 0 0; }
     article + article { margin-top: 2rem; padding-top: 2rem; border-top: 1px solid #2a2a2a; }
     footer { border-top: 1px solid #2a2a2a; margin-top: 3rem; padding-top: 1rem; color: #999; font-size: 0.9rem; }
     footer img.poster { height: 50px; width: auto; vertical-align: middle; margin-right: 0.5rem; border-radius: 2px; }
@@ -20,6 +34,10 @@
 <body>
   <header>
     <h1><a href="{% url 'entry_list' %}">Ansel's Blog</a></h1>
+    <nav>
+      <a href="{% url 'book_list' %}">Books</a>
+      <a href="{% url 'person_list' %}">People</a>
+    </nav>
   </header>
   {% block content %}{% endblock %}
   {% last_movie as movie %}

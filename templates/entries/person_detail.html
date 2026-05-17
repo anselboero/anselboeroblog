@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load blog_extras %}
+
+{% block title %}{{ person.name }} — Ansel Boero{% endblock %}
+
+{% block content %}
+  <article>
+    <h2>{{ person.name }}</h2>
+    {% if person.url %}<p><a href="{{ person.url }}" target="_blank" rel="noopener noreferrer">{{ person.url }}</a></p>{% endif %}
+    {% if person.bio %}<div>{{ person.bio|markdown }}</div>{% endif %}
+
+    {% if books %}
+      <h3>Books</h3>
+      {% include "entries/_book_grid.html" with show_author=False %}
+    {% endif %}
+
+    <h3>Entries</h3>
+    {% for entry in entries %}
+      <article>
+        <h4><a href="{{ entry.get_absolute_url }}">{{ entry.title }}</a></h4>
+        <time datetime="{{ entry.created|date:'c' }}">{{ entry.created|date:"j M Y" }}</time>
+      </article>
+    {% empty %}
+      <p>No entries yet.</p>
+    {% endfor %}
+  </article>
+{% endblock %}
