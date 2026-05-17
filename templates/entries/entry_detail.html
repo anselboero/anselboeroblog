@@ -7,6 +7,9 @@
   <article>
     <h2>{{ entry.title }}</h2>
     <time datetime="{{ entry.created|date:'c' }}">{{ entry.created|date:"j M Y" }}</time>
+    {% if entry.book %}
+      <p class="entry-book">On <a href="{{ entry.book.get_absolute_url }}">{{ entry.book.title }}</a> by <a href="{{ entry.book.author.get_absolute_url }}">{{ entry.book.author.name }}</a></p>
+    {% endif %}
     <div>{{ entry.body|markdown }}</div>
   </article>
 {% endblock %}

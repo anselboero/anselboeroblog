@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load blog_extras %}
+
+{% block title %}{{ book.title }} — Ansel Boero{% endblock %}
+
+{% block content %}
+  <article>
+    <h2>{{ book.title }}</h2>
+    <p>by <a href="{{ book.author.get_absolute_url }}">{{ book.author.name }}</a></p>
+    {% if book.cover_url %}
+      <p>
+        {% if book.goodreads_url %}
+          <a href="{{ book.goodreads_url }}" target="_blank" rel="noopener noreferrer" title="View on Goodreads"><img src="{{ book.cover_url }}" alt="{{ book.title }} cover" style="max-width: 200px;"></a>
+        {% else %}
+          <img src="{{ book.cover_url }}" alt="{{ book.title }} cover" style="max-width: 200px;">
+        {% endif %}
+      </p>
+    {% endif %}
+    {% if book.description %}<div>{{ book.description|markdown }}</div>{% endif %}
+
+    <h3>Entries about this book</h3>
+    {% for entry in entries %}
+      <article>
+        <h4><a href="{{ entry.get_absolute_url }}">{{ entry.title }}</a></h4>
+        <time datetime="{{ entry.created|date:'c' }}">{{ entry.created|date:"j M Y" }}</time>
+      </article>
+    {% empty %}
+      <p>No entries yet.</p>
+    {% endfor %}
+  </article>
+{% endblock %}
