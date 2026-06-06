@@ -79,3 +79,30 @@ class Entry(models.Model):
             'day': created.day,
             'slug': self.slug,
         })
+
+
+class Quote(models.Model):
+    """A quote attributed to a Person, auto-extracted from an Entry's body.
+
+    Records are synced on Entry save (see signals.py); the entry body is the
+    source of truth, so quotes are not edited directly.
+    """
+    text = models.TextField()
+    person = models.ForeignKey(
+        Person,
+        on_delete=models.CASCADE,
+        related_name='quotes',
+    )
+    entry = models.ForeignKey(
+        Entry,
+        on_delete=models.CASCADE,
+        related_name='quotes',
+    )
+    source_url = models.URLField(blank=True)
+    order = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ['entry', 'order']
+
+    def __str__(self):
+        return f'{self.person.name}: {self.text[:50]}'

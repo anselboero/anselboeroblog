@@ -21,5 +21,6 @@ urlpatterns = [
     path('books/<slug:slug>/', views.book_detail, name='book_detail'),
     path('people/', views.person_list, name='person_list'),
     path('people/<slug:slug>/', views.person_detail, name='person_detail'),
+    path('quotes/', views.quote_list, name='quote_list'),
     path('<int:year>/<mm:month>/<mm:day>/<slug:slug>/', views.entry_detail, name='entry_detail'),
 ]
