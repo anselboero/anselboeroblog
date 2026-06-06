@@ -14,6 +14,16 @@
       {% include "entries/_book_grid.html" with show_author=False %}
     {% endif %}
 
+    {% if quotes %}
+      <h3>Quotes</h3>
+      {% for quote in quotes %}
+        <div class="quote">
+          {{ quote.text|markdown }}
+          <p class="attribution">in <a href="{{ quote.entry.get_absolute_url }}">{{ quote.entry.title }}</a>{% if quote.source_url %} · <a href="{{ quote.source_url }}" target="_blank" rel="noopener noreferrer">source ↗</a>{% endif %}</p>
+        </div>
+      {% endfor %}
+    {% endif %}
+
     <h3>Entries</h3>
     {% for entry in entries %}
       <article>

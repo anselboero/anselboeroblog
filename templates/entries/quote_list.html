@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load blog_extras %}
+
+{% block title %}Quotes — Ansel Boero{% endblock %}
+
+{% block content %}
+  <h2>Quotes</h2>
+  {% for quote in quotes %}
+    <div class="quote">
+      {{ quote.text|markdown }}
+      <p class="attribution">
+        — <a href="{{ quote.person.get_absolute_url }}">{{ quote.person.name }}</a>,
+        in <a href="{{ quote.entry.get_absolute_url }}">{{ quote.entry.title }}</a>
+        {% if quote.source_url %} · <a href="{{ quote.source_url }}" target="_blank" rel="noopener noreferrer">source ↗</a>{% endif %}
+      </p>
+    </div>
+  {% empty %}
+    <p>No quotes yet.</p>
+  {% endfor %}
+{% endblock %}

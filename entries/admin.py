@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Book, Entry, Person
+from .models import Book, Entry, Person, Quote
 
 
 @admin.register(Entry)
@@ -26,3 +26,21 @@ class PersonAdmin(admin.ModelAdmin):
     list_display = ('name', 'slug', 'created')
     prepopulated_fields = {'slug': ('name',)}
     search_fields = ('name',)
+
+
+@admin.register(Quote)
+class QuoteAdmin(admin.ModelAdmin):
+    """Read-only view; quotes are synced from entry bodies, not edited here."""
+    list_display = ('person', 'short_text', 'entry', 'source_url')
+    list_filter = ('person',)
+    search_fields = ('text', 'person__name')
+
+    @admin.display(description='quote')
+    def short_text(self, obj):
+        return obj.text[:80]
+
+    def has_add_permission(self, request):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
