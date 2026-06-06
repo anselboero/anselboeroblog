@@ -1,7 +1,7 @@
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, render
 
-from .models import Book, Entry, Person
+from .models import Book, Entry, Person, Quote
 
 
 def _visible_entries(request):
@@ -36,6 +36,15 @@ def person_list(request):
     return render(request, 'entries/person_list.html', {'people': people})
 
 
+def quote_list(request):
+    quotes = (
+        Quote.objects.filter(entry__in=_visible_entries(request))
+        .select_related('person', 'entry')
+        .order_by('-entry__created', 'order')
+    )
+    return render(request, 'entries/quote_list.html', {'quotes': quotes})
+
+
 def book_detail(request, slug):
     book = get_object_or_404(Book, slug=slug)
     entries = _visible_entries(request).filter(book=book)
@@ -47,8 +56,14 @@ def person_detail(request, slug):
     entries = _visible_entries(request).filter(
         Q(people=person) | Q(book__author=person)
     ).distinct()
+    quotes = (
+        person.quotes.filter(entry__in=_visible_entries(request))
+        .select_related('entry')
+        .order_by('-entry__created', 'order')
+    )
     return render(request, 'entries/person_detail.html', {
         'person': person,
         'entries': entries,
         'books': person.books.all(),
+        'quotes': quotes,
     })
