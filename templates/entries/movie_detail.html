@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load blog_extras %}
+
+{% block title %}{{ movie.title }} — Ansel Boero{% endblock %}
+
+{% block content %}
+  <article>
+    <h2>{{ movie.title }}{% if movie.year %} ({{ movie.year }}){% endif %}</h2>
+    <p>dir. <a href="{{ movie.director.get_absolute_url }}">{{ movie.director.name }}</a></p>
+    {% if movie.poster_url %}
+      <p>
+        {% if movie.imdb_url %}
+          <a href="{{ movie.imdb_url }}" target="_blank" rel="noopener noreferrer" title="View on IMDb"><img src="{{ movie.poster_url }}" alt="{{ movie.title }} poster" style="max-width: 200px;"></a>
+        {% else %}
+          <img src="{{ movie.poster_url }}" alt="{{ movie.title }} poster" style="max-width: 200px;">
+        {% endif %}
+      </p>
+    {% endif %}
+    {% if movie.description %}<div>{{ movie.description|markdown }}</div>{% endif %}
+
+    {% for entry in entries %}
+      <article>
+        <h3><a href="{{ entry.get_absolute_url }}">{{ entry.title }}</a></h3>
+        <time datetime="{{ entry.created|date:'c' }}">{{ entry.created|date:"j M Y" }}</time>
+        <div>{{ entry.body|markdown }}</div>
+      </article>
+    {% empty %}
+      <p>No entries yet.</p>
+    {% endfor %}
+  </article>
+{% endblock %}

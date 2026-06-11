@@ -26,6 +26,7 @@
     .book-author a { color: #999; }
     time { color: #999; font-size: 0.9rem; }
     .entry-book { color: #999; font-size: 0.9rem; margin: 0.25rem 0 0; }
+    .entry-movie { color: #999; font-size: 0.9rem; margin: 0.25rem 0 0; }
     article + article { margin-top: 2rem; padding-top: 2rem; border-top: 1px solid #2a2a2a; }
     .quote, blockquote { border-left: 3px solid #58a6ff; padding: 0.5rem 0 0.5rem 1.25rem; margin: 1.5rem 0; color: #cfcfcf; }
     .quote p, blockquote p { margin: 0.4rem 0; font-style: italic; }
@@ -35,7 +36,8 @@
     blockquote ul { margin: 0.4rem 0 0; padding-left: 1.1rem; list-style: none; }
     .quote .attribution { margin-top: 0.4rem; }
     footer { border-top: 1px solid #2a2a2a; margin-top: 3rem; padding-top: 1rem; color: #999; font-size: 0.9rem; }
-    footer img.poster { height: 50px; width: auto; vertical-align: middle; margin-right: 0.5rem; border-radius: 2px; }
+    footer .last-movie { display: flex; align-items: center; }
+    footer img.poster { height: 50px; width: auto; flex-shrink: 0; margin-right: 0.5rem; border-radius: 2px; }
     footer .footer-bottom { display: flex; justify-content: space-between; align-items: center; margin-top: 0.75rem; }
     footer .credit { font-size: 0.8rem; color: #777; display: inline-flex; align-items: center; gap: 0.3rem; }
     footer .credit svg { width: 14px; height: 14px; display: block; }
@@ -52,6 +54,7 @@
     <h1><a href="{% url 'entry_list' %}">Ansel's Blog</a></h1>
     <nav>
       <a href="{% url 'book_list' %}">Books</a>
+      <a href="{% url 'movie_list' %}">Movies</a>
       <a href="{% url 'person_list' %}">People</a>
       <a href="{% url 'quote_list' %}">Quotes</a>
     </nav>
@@ -60,9 +63,9 @@
   {% last_movie as movie %}
   <footer>
     {% if movie %}
-      <div>
+      <div class="last-movie">
         {% if movie.poster_link %}<a href="{{ movie.imdb_link }}" target="_blank" rel="noopener noreferrer"><img class="poster" src="{{ movie.poster_link }}" alt="{{ movie.title }} poster" loading="lazy"></a>{% endif %}
-        Last movie watched: <a href="{{ movie.imdb_link }}" target="_blank" rel="noopener noreferrer">{{ movie.title }}</a>{% if movie.rating %} — {{ movie.rating }}/10{% endif %}
+        <div class="last-movie-text">Last movie watched: <a href="{{ movie.imdb_link }}" target="_blank" rel="noopener noreferrer">{{ movie.title }}</a>{% if movie.rating %} — {{ movie.rating }}/10{% endif %}{% if movie.review_link %} · <a href="{{ movie.review_link }}">my thoughs →</a>{% endif %}</div>
       </div>
     {% endif %}
     <div class="footer-bottom">

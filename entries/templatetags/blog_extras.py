@@ -36,6 +36,7 @@ def last_movie():
         'rating': data.get('last_watched__rating'),
         'imdb_link': data.get('last_watched__imdb_link'),
         'poster_link': data.get('last_watched__poster_link'),
+        'review_link': data.get('last_watched__review_link'),
     }
     cache.set(LAST_MOVIE_CACHE_KEY, movie, LAST_MOVIE_CACHE_TTL)
     return movie

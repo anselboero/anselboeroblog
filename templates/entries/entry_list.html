@@ -9,6 +9,9 @@
       {% if entry.book %}
         <p class="entry-book">On <a href="{{ entry.book.get_absolute_url }}">{{ entry.book.title }}</a></p>
       {% endif %}
+      {% if entry.movie %}
+        <p class="entry-movie">🎬 <a href="{{ entry.movie.get_absolute_url }}">{{ entry.movie.title }}</a></p>
+      {% endif %}
       <div>{{ entry.body|markdown|truncatewords_html:40 }}</div>
       {% if entry.body|wordcount > 40 %}
         <p class="read-more"><a href="{{ entry.get_absolute_url }}">Read more →</a></p>
