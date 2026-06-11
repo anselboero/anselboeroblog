@@ -1,0 +1,21 @@
+<div class="book-grid">
+  {% for movie in movies %}
+    <div class="book-card">
+      <a href="{{ movie.get_absolute_url }}" class="book-cover-link">
+        {% if movie.poster_url %}
+          <img src="{{ movie.poster_url }}" alt="{{ movie.title }} poster" loading="lazy">
+        {% else %}
+          <div class="book-cover-placeholder">{{ movie.title }}</div>
+        {% endif %}
+      </a>
+      <div class="book-meta">
+        <div class="book-title"><a href="{{ movie.get_absolute_url }}">{{ movie.title }}</a>{% if movie.year %} ({{ movie.year }}){% endif %}</div>
+        {% if show_director|default_if_none:True %}
+          <div class="book-author">dir. <a href="{{ movie.director.get_absolute_url }}">{{ movie.director.name }}</a></div>
+        {% endif %}
+      </div>
+    </div>
+  {% empty %}
+    <p>No movies yet.</p>
+  {% endfor %}
+</div>

@@ -1,12 +1,12 @@
 from django.contrib import admin
 
-from .models import Book, Entry, Person, Quote
+from .models import Book, Entry, Movie, Person, Quote
 
 
 @admin.register(Entry)
 class EntryAdmin(admin.ModelAdmin):
-    list_display = ('title', 'slug', 'book', 'created', 'updated', 'is_published')
-    list_filter = ('is_published', 'book')
+    list_display = ('title', 'slug', 'book', 'movie', 'created', 'updated', 'is_published')
+    list_filter = ('is_published', 'book', 'movie')
     prepopulated_fields = {'slug': ('title',)}
     search_fields = ('title', 'body')
     date_hierarchy = 'created'
@@ -19,6 +19,14 @@ class BookAdmin(admin.ModelAdmin):
     list_filter = ('author',)
     prepopulated_fields = {'slug': ('title',)}
     search_fields = ('title', 'author__name', 'isbn')
+
+
+@admin.register(Movie)
+class MovieAdmin(admin.ModelAdmin):
+    list_display = ('title', 'director', 'year', 'slug', 'created')
+    list_filter = ('director',)
+    prepopulated_fields = {'slug': ('title',)}
+    search_fields = ('title', 'director__name')
 
 
 @admin.register(Person)

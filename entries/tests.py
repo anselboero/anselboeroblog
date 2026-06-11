@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from .models import Entry, Person, Quote
+from .models import Entry, Movie, Person, Quote
 from .quotes import extract_quotes
 
 
@@ -136,3 +136,31 @@ class QuoteVisibilityTests(TestCase):
         )
         response = self.client.get('/quotes/')
         self.assertContains(response, 'Public.')
+
+
+class MovieDetailTests(TestCase):
+    """The movie detail page renders the linked entry's body inline."""
+
+    def setUp(self):
+        self.director = Person.objects.create(name='Greta Gerwig', slug='greta-gerwig')
+        self.movie = Movie.objects.create(
+            title='Lady Bird', slug='lady-bird', director=self.director, year=2017,
+        )
+
+    def test_published_entry_body_shown(self):
+        Entry.objects.create(
+            title='On Lady Bird', slug='on-lady-bird', is_published=True,
+            body='A tender coming-of-age film.', movie=self.movie,
+        )
+        response = self.client.get('/movies/lady-bird/')
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'A tender coming-of-age film.')
+
+    def test_draft_entry_body_hidden_from_anonymous(self):
+        Entry.objects.create(
+            title='Draft on Lady Bird', slug='draft-lady-bird', is_published=False,
+            body='Secret unpublished take.', movie=self.movie,
+        )
+        response = self.client.get('/movies/lady-bird/')
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, 'Secret unpublished take.')

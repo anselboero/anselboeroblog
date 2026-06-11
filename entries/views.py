@@ -1,7 +1,7 @@
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, render
 
-from .models import Book, Entry, Person, Quote
+from .models import Book, Entry, Movie, Person, Quote
 
 
 def _visible_entries(request):
@@ -31,6 +31,11 @@ def book_list(request):
     return render(request, 'entries/book_list.html', {'books': books})
 
 
+def movie_list(request):
+    movies = Movie.objects.all()
+    return render(request, 'entries/movie_list.html', {'movies': movies})
+
+
 def person_list(request):
     people = Person.objects.all()
     return render(request, 'entries/person_list.html', {'people': people})
@@ -51,10 +56,16 @@ def book_detail(request, slug):
     return render(request, 'entries/book_detail.html', {'book': book, 'entries': entries})
 
 
+def movie_detail(request, slug):
+    movie = get_object_or_404(Movie, slug=slug)
+    entries = _visible_entries(request).filter(movie=movie)
+    return render(request, 'entries/movie_detail.html', {'movie': movie, 'entries': entries})
+
+
 def person_detail(request, slug):
     person = get_object_or_404(Person, slug=slug)
     entries = _visible_entries(request).filter(
-        Q(people=person) | Q(book__author=person)
+        Q(people=person) | Q(book__author=person) | Q(movie__director=person)
     ).distinct()
     quotes = (
         person.quotes.filter(entry__in=_visible_entries(request))
@@ -65,5 +76,6 @@ def person_detail(request, slug):
         'person': person,
         'entries': entries,
         'books': person.books.all(),
+        'movies': person.movies.all(),
         'quotes': quotes,
     })
