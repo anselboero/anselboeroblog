@@ -12,7 +12,11 @@ register = template.Library()
 
 @register.filter(name='markdown')
 def markdown_filter(value):
-    html = md.markdown(value, extensions=['fenced_code', 'tables', 'smarty'])
+    html = md.markdown(
+        value,
+        extensions=['fenced_code', 'tables', 'smarty', 'toc'],
+        extension_configs={'toc': {'anchorlink': True}},
+    )
     return mark_safe(html)
 
 
