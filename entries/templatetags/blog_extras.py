@@ -40,3 +40,29 @@ def last_movie():
     }
     cache.set(LAST_MOVIE_CACHE_KEY, movie, LAST_MOVIE_CACHE_TTL)
     return movie
+
+
+CURRENTLY_READING_URL = 'https://storage.googleapis.com/anselboero-website-prod-apis/currently_reading_book.json'
+CURRENTLY_READING_CACHE_KEY = 'currently_reading_book'
+CURRENTLY_READING_CACHE_TTL = 60 * 15
+
+
+@register.simple_tag
+def currently_reading():
+    cached = cache.get(CURRENTLY_READING_CACHE_KEY)
+    if cached is not None:
+        return cached
+    try:
+        with urlopen(CURRENTLY_READING_URL, timeout=2) as response:
+            data = json.load(response)
+    except (URLError, OSError, json.JSONDecodeError):
+        return None
+    book = {
+        'title': data.get('currently_reading__title'),
+        'goodreads_link': data.get('currently_reading__goodreads_link'),
+        'poster_link': data.get('currently_reading__poster_link'),
+        'quote': data.get('currently_reading__quote'),
+        'personal_website_link': data.get('currently_reading__personal_website_link'),
+    }
+    cache.set(CURRENTLY_READING_CACHE_KEY, book, CURRENTLY_READING_CACHE_TTL)
+    return book
