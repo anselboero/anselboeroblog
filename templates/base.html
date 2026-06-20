@@ -36,7 +36,9 @@
     blockquote ul { margin: 0.4rem 0 0; padding-left: 1.1rem; list-style: none; }
     .quote .attribution { margin-top: 0.4rem; }
     footer { border-top: 1px solid #2a2a2a; margin-top: 3rem; padding-top: 1rem; color: #999; font-size: 0.9rem; }
-    footer .last-movie { display: flex; align-items: center; }
+    footer .last-movie, footer .currently-reading { display: flex; align-items: center; }
+    footer .currently-reading { margin-top: 0.75rem; }
+    footer .currently-reading-quote { font-style: italic; color: #777; margin-top: 0.25rem; }
     footer img.poster { height: 50px; width: auto; flex-shrink: 0; margin-right: 0.5rem; border-radius: 2px; }
     footer .footer-bottom { display: flex; justify-content: space-between; align-items: center; margin-top: 0.75rem; }
     footer .credit { font-size: 0.8rem; color: #777; display: inline-flex; align-items: center; gap: 0.3rem; }
@@ -61,11 +63,18 @@
   </header>
   {% block content %}{% endblock %}
   {% last_movie as movie %}
+  {% currently_reading as book %}
   <footer>
     {% if movie %}
       <div class="last-movie">
         {% if movie.poster_link %}<a href="{{ movie.imdb_link }}" target="_blank" rel="noopener noreferrer"><img class="poster" src="{{ movie.poster_link }}" alt="{{ movie.title }} poster" loading="lazy"></a>{% endif %}
         <div class="last-movie-text">Last movie watched: <a href="{{ movie.imdb_link }}" target="_blank" rel="noopener noreferrer">{{ movie.title }}</a>{% if movie.rating %} — {{ movie.rating }}/10{% endif %}{% if movie.review_link %} · <a href="{{ movie.review_link }}">my thoughs →</a>{% endif %}</div>
+      </div>
+    {% endif %}
+    {% if book %}
+      <div class="currently-reading">
+        {% if book.poster_link %}<a href="{{ book.goodreads_link }}" target="_blank" rel="noopener noreferrer"><img class="poster" src="{{ book.poster_link }}" alt="{{ book.title }} cover" loading="lazy"></a>{% endif %}
+        <div class="currently-reading-text">Currently reading: <a href="{{ book.goodreads_link }}" target="_blank" rel="noopener noreferrer">{{ book.title }}</a>{% if book.personal_website_link %} · <a href="{{ book.personal_website_link }}" target="_blank" rel="noopener noreferrer">author's site →</a>{% endif %}{% if book.quote %}<div class="currently-reading-quote">“{{ book.quote }}”</div>{% endif %}</div>
       </div>
     {% endif %}
     <div class="footer-bottom">
